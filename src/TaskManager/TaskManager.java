@@ -1,15 +1,18 @@
+package TaskManager;
+import Task.*;
+import TaskStatus.TaskStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
-    private static int taskId = 0;
+    private static int taskid = 0;
 
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
     private int getIncreaseID() {
-        return ++taskId;
+        return ++taskid;
     }
 
     public ArrayList<Task> getTasks() {
@@ -50,7 +53,7 @@ public class TaskManager {
 
     public SubTask addNewSubTask(SubTask subTask) {
         subTask.setId(getIncreaseID());
-        Epic epic = epics.get(subTask.getEpicID());
+        Epic epic = epics.get(subTask.getEpicid());
         epic.addSubTask(subTask); // кладем подзадачу в лист подзадач епика
         subTasks.put(subTask.getId(), subTask);
         updateEpicStatus(epic);
@@ -99,7 +102,7 @@ public class TaskManager {
         if (subTaskID == null || !subTasks.containsKey(subTaskID)) {
             return null;
         }
-        int epicID = subTask.getEpicID();
+        int epicID = subTask.getEpicid();
         SubTask oldSubtask = subTasks.get(subTaskID);
         subTasks.replace(subTaskID, subTask);
         // обновляем подзадачу в списке подзадач эпика и проверяем статус эпика
@@ -144,11 +147,17 @@ public class TaskManager {
 
     public void deleteTasks() {
         tasks.clear();
+        if (getTasks().isEmpty()){
+            System.out.println("Список всех задач пуст");
+        }
     }
 
     public void deleteEpics() {
         epics.clear();
         subTasks.clear();
+        if (getEpics().isEmpty()){
+            System.out.println("Список всех епиков и их подзадач пуст");
+        }
     }
 
     public void deleteSubTasks() {
@@ -157,6 +166,7 @@ public class TaskManager {
             epic.clearSubTask();
             epic.setStatus(TaskStatus.NEW);
         }
+        System.out.println("Список всех подзадач пуст");
     }
 
     public void deleteTaskByID(int id) {
@@ -173,7 +183,7 @@ public class TaskManager {
 
     public void deleteSubtaskByID(int id) {
         SubTask subtask = subTasks.get(id);
-        int epicID = subtask.getEpicID();
+        int epicID = subtask.getEpicid();
         subTasks.remove(id);
 //        обновляем список подзадач и статус эпика
         Epic epic = epics.get(epicID);
@@ -187,8 +197,8 @@ public class TaskManager {
     public void printAllManager() {
         System.out.println("Печатаем tasks:");
         if (!getTasks().isEmpty()) {
-            for (int i = 0; i < getSubTasks().size(); i++) {
-                System.out.println(i);
+            for (int i = 0; i < getTasks().size(); i++) {
+                System.out.println(getTasks().get(i));
             }
         } else {
             System.out.println("содержит - null");
@@ -196,7 +206,7 @@ public class TaskManager {
         System.out.println("Печатаем epics:");
         if (!getEpics().isEmpty()) {
             for (int i = 0; i < getEpics().size(); i++) {
-                System.out.println(i);
+                System.out.println(getEpics().get(i));
             }
         } else {
             System.out.println("содержит - null");
@@ -204,7 +214,7 @@ public class TaskManager {
         System.out.println("Печатаем subtask:");
         if (!getSubTasks().isEmpty()) {
             for (int i = 0; i < getSubTasks().size(); i++) {
-                System.out.println(i);
+                System.out.println(getSubTasks().get(i));
             }
         } else {
             System.out.println("содержит - null");

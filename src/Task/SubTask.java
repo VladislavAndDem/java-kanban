@@ -1,19 +1,22 @@
+package Task;
+import TaskStatus.TaskStatus;
+
 public class SubTask extends Task {
 
-    private final int epicID;
+    private final int epicid;
 
     public SubTask(String title, String description, int epicID) {
         super(title, description);
-        this.epicID = epicID;
+        this.epicid = epicID;
     }
 
     public SubTask(int id, String title, String description, TaskStatus status, int epicID) {
         super(id, title, description, status);
-        this.epicID = epicID;
+        this.epicid = epicID;
     }
 
-    public int getEpicID() {
-        return epicID;
+    public int getEpicid() {
+        return epicid;
     }
 
     @Override
@@ -22,7 +25,7 @@ public class SubTask extends Task {
                 "title='" + getTitle() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", id=" + getId() +
-                ", epicID=" + epicID +
+                ", epicID=" + epicid +
                 ", status=" + getStatus() +
                 '}';
     }
