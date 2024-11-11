@@ -8,21 +8,20 @@ public class TaskManager {
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
-    private int getUppId() {
-        taskId++;
-        return taskId;
+    private int getIncreaseID() {
+        return ++taskId;
     }
 
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
+    public ArrayList<Task> getTasks() {
+        return new ArrayList<>(tasks.values());
     }
 
-    public HashMap<Integer, Epic> getEpics() {
-        return epics;
+    public ArrayList<Epic> getEpics() {
+        return new ArrayList<>(epics.values());
     }
 
-    public HashMap<Integer, SubTask> getSubTasks() {
-        return subTasks;
+    public ArrayList<SubTask> getSubTasks() {
+        return new ArrayList<>(subTasks.values());
     }
 
     public Task getTaskByID(int id) {
@@ -38,19 +37,19 @@ public class TaskManager {
     }
 
     public Task addNewTask(Task task) {
-        task.setId(getUppId()); // в обекте таск инициализироали id
+        task.setId(getIncreaseID()); // в обекте таск инициализироали id
         tasks.put(task.getId(), task);
         return task;
     }
 
     public Epic addNewEpic(Epic epic) {
-        epic.setId(getUppId());
+        epic.setId(getIncreaseID());
         epics.put(epic.getId(), epic);
         return epic;
     }
 
     public SubTask addNewSubTask(SubTask subTask) {
-        subTask.setId(getUppId());
+        subTask.setId(getIncreaseID());
         Epic epic = epics.get(subTask.getEpicID());
         epic.addSubTask(subTask); // кладем подзадачу в лист подзадач епика
         subTasks.put(subTask.getId(), subTask);
@@ -60,7 +59,6 @@ public class TaskManager {
         return subTask;
     }
 
-    //-------------------------------------------------------
     public Task updateTask(Task task) {
         Integer taskID = task.getId();
         if (taskID == null || !tasks.containsKey(taskID)) { // если мапа не содержит такой ключ
@@ -189,29 +187,28 @@ public class TaskManager {
     public void printAllManager() {
         System.out.println("Печатаем tasks:");
         if (!getTasks().isEmpty()) {
-            for (Task arg : getTasks().values()) { //test
-                System.out.println(arg);
+            for (int i = 0; i < getSubTasks().size(); i++) {
+                System.out.println(i);
             }
         } else {
             System.out.println("содержит - null");
         }
         System.out.println("Печатаем epics:");
         if (!getEpics().isEmpty()) {
-            for (Epic ep : getEpics().values()) {
-                System.out.println(ep);
+            for (int i = 0; i < getEpics().size(); i++) {
+                System.out.println(i);
             }
         } else {
             System.out.println("содержит - null");
         }
         System.out.println("Печатаем subtask:");
         if (!getSubTasks().isEmpty()) {
-            for (SubTask sb : getSubTasks().values()) {
-                System.out.println(sb);
+            for (int i = 0; i < getSubTasks().size(); i++) {
+                System.out.println(i);
             }
         } else {
             System.out.println("содержит - null");
         }
-
 
     }
 
