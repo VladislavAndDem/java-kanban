@@ -1,5 +1,4 @@
-package Task;
-import TaskStatus.TaskStatus;
+package task;
 
 public class SubTask extends Task {
 

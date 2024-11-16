@@ -1,5 +1,5 @@
-package Task;
-import TaskStatus.TaskStatus;
+package task;
+
 import java.util.Objects;
 
 public class Task {
@@ -59,7 +59,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(title, task.title) && Objects.equals(description, task.description) && status == task.status;
+        return id == task.id;
     }
 
     @Override

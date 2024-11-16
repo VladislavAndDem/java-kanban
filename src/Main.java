@@ -1,91 +1,85 @@
-import Task.Task;
-import TaskManager.TaskManager;
-import Task.*;
-import TaskStatus.TaskStatus;
+import taskManager.InMemoryTaskManager;
+import taskManager.Managers;
+import task.Task;
+import task.Epic;
+import task.SubTask;
+import task.TaskStatus;
+
 
 public class Main {
+
+    private static final InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
+
     public static void main(String[] args) {
 
-        TaskManager manager = new TaskManager();
+        addTasks();
+        printAllTasks();
+        printViewHistory();
+    }
 
-        Task task1 = new Task("Первая таска 1", "описание таск 1");
-        Task task2 = new Task("Вторая Таска 2", "описание таск 2");
+    private static void addTasks() {
+        Task task1 = new Task("Задача 1", "Описание 1");
+        inMemoryTaskManager.addNewTask(task1);
 
-        Task task1Add = manager.addNewTask(task1);
-        Task task2Add = manager.addNewTask(task2);
-
-        Task task1Update = new Task(task1.getId(), "Первая таска 1.1.", "Описание таск 1.1",
-                TaskStatus.IN_PROGRESS);
-        Task task2Update = new Task(task2.getId(), "Первая таска 2.1.", "Описание таск 2.1",
-                TaskStatus.IN_PROGRESS);
-
-        Task task1Updated = manager.updateTask(task1Update);
-        Task task2Updated = manager.updateTask(task2Update);
+        Task task1Uppdate = new Task(task1.getId(), "Задача 1.1",
+                "Описание 1.1", TaskStatus.IN_PROGRESS);
+        inMemoryTaskManager.updateTask(task1Uppdate);
+        inMemoryTaskManager.addNewTask(new Task("Задача 2", "Описание 2"));
 
 
-        Epic epic1 = new Epic("Первый епик 1", "Описание епика 1");
-        Epic epic2 = new Epic("Второй епик 2", "Описание епика 2");
-
-        manager.addNewEpic(epic1);
-        manager.addNewEpic(epic2);
-
-        SubTask subTask1Epic1 = new SubTask("Подзадача 1 епика 1", "Описание подзадачи 1 епика 1",
+        Epic epic1 = new Epic("Епик 1", "Описание Епика 1");
+        inMemoryTaskManager.addNewEpic(epic1);
+        SubTask epic1SubTusk1 = new SubTask("Подзадача 1 епика 1", "Описание подзадача 1 епика 1",
                 epic1.getId());
-        SubTask subTask2Epic1 = new SubTask("Подзадача 2 епика 1", "Описание подзадачи 2 епика 1",
+        SubTask epic1SubTusk2 = new SubTask("Подзадача 2 епика 1", "Описание подзадача 2 епика 1",
                 epic1.getId());
-        SubTask subTask1Epic2 = new SubTask("Подзадача 1 епика 2", "Описание подзадачи 1 епика 2",
-                epic2.getId());
+        SubTask epic1SubTusk3 = new SubTask("Подзадача 3 епика 1", "Описание подзадача 3 епика 1",
+                epic1.getId());
+        inMemoryTaskManager.addNewSubTask(epic1SubTusk1);
+        inMemoryTaskManager.addNewSubTask(epic1SubTusk2);
+        inMemoryTaskManager.addNewSubTask(epic1SubTusk3);
+        epic1SubTusk2.setStatus(TaskStatus.DONE);
+        inMemoryTaskManager.updateSubtask(epic1SubTusk2);
+    }
 
-        manager.addNewSubTask(subTask1Epic1);
-        manager.addNewSubTask(subTask2Epic1);
-        manager.addNewSubTask(subTask1Epic2);
+    private static void printAllTasks() {
+        System.out.println("Задачи:");
+        for (Task task : Main.inMemoryTaskManager.getTasks()) {
+            System.out.println(task);
+        }
+        System.out.println("Эпики:");
+        for (Epic epic : Main.inMemoryTaskManager.getEpics()) {
+            System.out.println(epic);
 
-        System.out.println("Печатаем все добавленные задачи:");
-        manager.printAllManager();
-        System.out.println();
+            for (Task task : Main.inMemoryTaskManager.getEpicSubtasks(epic)) {
+                System.out.println("--> " + task);
+            }
+        }
 
+        System.out.println("Подзадачи:");
+        for (Task subtask : Main.inMemoryTaskManager.getSubTasks()) {
+            System.out.println(subtask);
+        }
+    }
 
-        System.out.println("Обновляем статус подзадачь и епика:");
-        System.out.println();
-
-        subTask1Epic1.setStatus(TaskStatus.IN_PROGRESS);
-        subTask2Epic1.setStatus(TaskStatus.DONE);
-        manager.updateSubtask(subTask1Epic1);
-        manager.updateSubtask(subTask2Epic1);
-        manager.updateEpic(epic1);
-
-        manager.printAllManager();
-
-        subTask1Epic1.setStatus(TaskStatus.DONE);
-        manager.updateSubtask(subTask1Epic1);
-        manager.updateEpic(epic1);
-
-
-        System.out.println();
-        System.out.println("Статус епика1 -> DONE");
-        System.out.println(epic1.getStatus());
-
-        System.out.println();
-        System.out.println("Статус епика2 -> NEW");
-        System.out.println(epic2.getStatus());
-
-        System.out.println();
-        System.out.println("Удаляем подзадачу1 епика2 и проверяем статус епика2 -> подзадач нет -> статус DONE");
-        manager.deleteSubtaskByID(subTask1Epic2.getId());
-        System.out.println(epic2.getStatus());
-
-        System.out.println();
-        System.out.println("Удаляем епик1 по ID:");
-        manager.deleteEpicByID(epic1.getId());
-        System.out.println(manager.getEpics());
+    private static void printViewHistory() {
+        //просматриваем 11 задач, в истории должны отобразиться последние 10
+        Main.inMemoryTaskManager.getTaskByID(2);
+        Main.inMemoryTaskManager.getTaskByID(2);
+        Main.inMemoryTaskManager.getEpicByID(3);
+        Main.inMemoryTaskManager.getTaskByID(1);
+        Main.inMemoryTaskManager.getSubtaskByID(2);
+        Main.inMemoryTaskManager.getSubtaskByID(5);
+        Main.inMemoryTaskManager.getSubtaskByID(4);
+        Main.inMemoryTaskManager.getEpicByID(3);
+        Main.inMemoryTaskManager.getSubtaskByID(3);
+        Main.inMemoryTaskManager.getTaskByID(2);
+        Main.inMemoryTaskManager.getSubtaskByID(5);
 
         System.out.println();
-        System.out.println("Удаляем все епики");
-        manager.deleteEpics();
-
-        System.out.println();
-        System.out.println("Удаляем все таски:");
-        manager.deleteTasks();
-
+        System.out.println("История просмотров:");
+        for (Task task : Main.inMemoryTaskManager.getHistory()) {
+            System.out.println(task);
+        }
     }
 }
