@@ -1,24 +1,17 @@
-package test.manager;
-
-
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import task.SubTask;
-import task.Task;
-
-import task.Epic;
-import taskManager.Managers;
-import taskManager.TaskManager;
-
-import java.util.List;
+package taskManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import task.SubTask;
+import task.Task;
+import task.Epic;
+import java.util.List;
+
 class InMemoryTaskManagerTest {
 
-    private static TaskManager taskManager;
+    private TaskManager taskManager;
 
     @BeforeEach
     public void beforeEach() {

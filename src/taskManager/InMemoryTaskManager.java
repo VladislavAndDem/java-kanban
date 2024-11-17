@@ -7,15 +7,15 @@ import java.util.List;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private static int taskid = 0;
+    private int taskid = 0;
 
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    @Override
-    public int getIncreasedD() {
+
+    private int getIncreasedD() {
         return ++taskid;
     }
 
@@ -38,33 +38,27 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskByID(int id) {
         Task task = tasks.get(id);
-        if (task != null) {// Добавление в лист истории при вызове метода
-            historyManager.addHistory(task);
-        }
+        historyManager.addHistory(task);
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpicByID(int id) {
         Epic epic = epics.get(id);
-        if (epic != null) {// Добавление в лист истории при вызове метода
-            historyManager.addHistory(epic);
-        }
+        historyManager.addHistory(epic);
         return epics.get(id);
     }
 
     @Override
     public SubTask getSubtaskByID(int id) {
         SubTask subTask = subTasks.get(id);
-        if (subTask != null) {// Добавление в лист истории при вызове метода
-            historyManager.addHistory(subTask);
-        }
+        historyManager.addHistory(subTask);
         return subTasks.get(id);
     }
 
     @Override
     public Task addNewTask(Task task) {
-        task.setId(getIncreasedD()); // в обекте таск инициализироали id
+        task.setId(getIncreasedD()); // в объекте таск инициализироали id
         tasks.put(task.getId(), task);
         return task;
     }

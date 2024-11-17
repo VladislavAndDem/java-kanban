@@ -1,9 +1,6 @@
-package test.task;
+package task;
 
 import org.junit.jupiter.api.Test;
-import task.Epic;
-import task.TaskStatus;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {

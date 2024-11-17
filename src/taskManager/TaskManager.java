@@ -4,18 +4,16 @@ import task.Epic;
 import task.SubTask;
 import task.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-    int getIncreasedD();
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    ArrayList<SubTask> getSubTasks();
+    List<SubTask> getSubTasks();
 
-    ArrayList<SubTask> getEpicSubtasks(Epic epic);
+    List<SubTask> getEpicSubtasks(Epic epic);
 
     Task getTaskByID(int id);
 

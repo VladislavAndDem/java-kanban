@@ -5,19 +5,30 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private static final int MAX_HISTOY_VIEWING = 10;
+    private static final int MAX_HISTORY_VIEWING = 10;
     private final List<Task> historyList = new ArrayList<>();
 
     @Override
     public void addHistory(Task task) {
-        if (historyList.size() == MAX_HISTOY_VIEWING) {
+
+        Task taskCopy = task;
+        if (task == null){
+            return;
+        }
+        if (historyList.size() == MAX_HISTORY_VIEWING) {
             historyList.removeFirst();
         }
-        historyList.add(task);
+        historyList.add(taskCopy);
     }
 
     @Override
     public List<Task> getHistory() {
-        return historyList;
+        return new ArrayList<>(historyList);
+    }
+
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

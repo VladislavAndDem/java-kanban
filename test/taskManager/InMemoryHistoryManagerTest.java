@@ -1,18 +1,16 @@
-package test.manager;
+package taskManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.TaskStatus;
 import task.Task;
-import taskManager.Managers;
-import taskManager.TaskManager;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InMemoryHistoryManagerTest {
-    private static TaskManager taskManager;
+    private  TaskManager taskManager;
 
     @BeforeEach
     public void beforeEach() {
