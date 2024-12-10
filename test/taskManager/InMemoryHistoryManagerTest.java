@@ -18,19 +18,19 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void getHistoryShouldReturnListOf10Tasks() {
+    public void getHistoryShouldReturnListWithoutDuplicates() {
         // get History Должен возвращать Список Из 10 Задач
-        for (int i = 0; i < 11; i++) { // добавляем 11 задач в мапу tasks
+        for (int i = 0; i < 5; i++) { // добавляем 5 задач в мапу tasks
             taskManager.addNewTask(new Task("Некоторая задача", "Некоторое описание"));
         }
-
-        List<Task> tasks = taskManager.getTasks();
-        for (Task task : tasks) {
-            taskManager.getTaskByID(task.getId()); // получаем все 11 объектов из мапы tasks по id
-        }
-
+        // получаем таски по id
+        taskManager.getTaskByID(1);
+        taskManager.getTaskByID(1);
+        taskManager.getTaskByID(3);
+        taskManager.getTaskByID(3);
+        // В истории должно быть два элемента
         List<Task> list = taskManager.getHistory();
-        assertEquals(10, list.size(), "Неверное количество элементов в истории ");
+        assertEquals(2, list.size(), "Неверное количество элементов в истории ");
     }
 
     @Test

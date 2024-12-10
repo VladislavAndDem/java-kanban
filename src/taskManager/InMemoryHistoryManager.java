@@ -1,34 +1,73 @@
 package taskManager;
 
 import task.Task;
+
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-
-    private static final int MAX_HISTORY_VIEWING = 10;
-    private final List<Task> historyList = new ArrayList<>();
+    public Node<Task> head;
+    public Node<Task> tail;
+    Map<Integer, Node<Task>> history = new HashMap<>();
 
     @Override
-    public void addHistory(Task task) {
-
-        Task taskCopy = task;
+    public void add(Task task) {
         if (task == null){
             return;
         }
-        if (historyList.size() == MAX_HISTORY_VIEWING) {
-            historyList.removeFirst();
+        Node<Task> newNode = new Node<>(task);
+        if (head == null) { // если голова пустая, то есть вся история пустая
+            head = newNode;//newNode становится одновременно и головой и хвостом
+            tail = newNode;
+        } else {
+            tail.next = newNode; // хвост становится ссылкой на элемент newNode
+            newNode.prev = tail; // значение ссылка на предыдущий элемент в узле newNode становиться tail
+            tail = newNode;
         }
-        historyList.add(taskCopy);
+        remove(task.getId());
+        history.put(task.getId(), newNode);
+
     }
 
     @Override
     public List<Task> getHistory() {
-        return new ArrayList<>(historyList);
+        ArrayList<Task> list = new ArrayList<>();
+        Node<Task> current = head;
+        while (current != null) {
+            list.add(current.data);
+            current = current.next;
+        }
+        return list;
     }
 
-
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public void remove(int id) {
+        for (Integer i : history.keySet()) {
+            if (id == i) {
+                removeNode(history.get(id));
+            }
+        }
+    }
+
+    public void removeNode (Node<Task> currentNode){
+        if (currentNode == null) {
+            return;
+        }
+        if (currentNode == head && currentNode != tail) {
+            Node<Task> nextNode = currentNode.next;
+            nextNode.prev = null;
+            head = nextNode;
+        } else if (currentNode == tail && currentNode != head) {
+            Node<Task> prevNode = currentNode.prev;
+            prevNode.next = null;
+            tail = prevNode;
+        } else if (currentNode == head && currentNode == tail) {
+            head = null;
+            tail = null;
+        } else {
+            Node<Task> nextNode = currentNode.next;
+            Node<Task> prevNode = currentNode.prev;
+            prevNode.next = currentNode.next;
+            nextNode.prev = currentNode.prev;
+        }
     }
 }

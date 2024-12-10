@@ -38,21 +38,21 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskByID(int id) {
         Task task = tasks.get(id);
-        historyManager.addHistory(task);
+        historyManager.add(task);
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpicByID(int id) {
         Epic epic = epics.get(id);
-        historyManager.addHistory(epic);
+        historyManager.add(epic);
         return epics.get(id);
     }
 
     @Override
     public SubTask getSubtaskByID(int id) {
         SubTask subTask = subTasks.get(id);
-        historyManager.addHistory(subTask);
+        historyManager.add(subTask);
         return subTasks.get(id);
     }
 
