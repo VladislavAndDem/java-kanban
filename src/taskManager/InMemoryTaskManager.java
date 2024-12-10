@@ -1,6 +1,10 @@
 package taskManager;
 
-import task.*;
+import task.Epic;
+import task.SubTask;
+import task.Task;
+import task.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -169,7 +173,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTasks() {
         tasks.clear();
-        if (getTasks().isEmpty()){
+        if (getTasks().isEmpty()) {
             System.out.println("Список всех задач пуст");
         }
     }
@@ -178,7 +182,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpics() {
         epics.clear();
         subTasks.clear();
-        if (getEpics().isEmpty()){
+        if (getEpics().isEmpty()) {
             System.out.println("Список всех епиков и их подзадач пуст");
         }
     }
@@ -221,7 +225,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getHistory(){
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 

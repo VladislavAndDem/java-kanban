@@ -2,7 +2,10 @@ package taskManager;
 
 import task.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
     public Node<Task> head;
@@ -11,7 +14,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (task == null){
+        if (task == null) {
             return;
         }
         Node<Task> newNode = new Node<>(task);
@@ -48,7 +51,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    public void removeNode (Node<Task> currentNode){
+    public void removeNode(Node<Task> currentNode) {
         if (currentNode == null) {
             return;
         }
