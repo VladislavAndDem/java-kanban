@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private int taskid = 0;
+    private int taskId = 0;
 
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
@@ -20,7 +20,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     private int getIncreasedD() {
-        return ++taskid;
+        return ++taskId;
     }
 
     @Override
