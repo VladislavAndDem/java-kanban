@@ -1,5 +1,5 @@
-import taskManager.InMemoryTaskManager;
-import taskManager.Managers;
+import manager.InMemoryTaskManager;
+import manager.Managers;
 import task.Task;
 import task.Epic;
 import task.SubTask;
@@ -64,22 +64,23 @@ public class Main {
 
     private static void printViewHistory() {
         //просматриваем 11 задач, в истории должны отобразиться последние 10
-        Main.inMemoryTaskManager.getTaskByID(2);
-        Main.inMemoryTaskManager.getTaskByID(2);
         Main.inMemoryTaskManager.getEpicByID(3);
-        Main.inMemoryTaskManager.getTaskByID(1);
-        Main.inMemoryTaskManager.getSubtaskByID(2);
-        Main.inMemoryTaskManager.getSubtaskByID(5);
-        Main.inMemoryTaskManager.getSubtaskByID(4);
         Main.inMemoryTaskManager.getEpicByID(3);
-        Main.inMemoryTaskManager.getSubtaskByID(3);
         Main.inMemoryTaskManager.getTaskByID(2);
+        Main.inMemoryTaskManager.getTaskByID(2);
+        Main.inMemoryTaskManager.getSubtaskByID(6);
+        Main.inMemoryTaskManager.getSubtaskByID(6);
         Main.inMemoryTaskManager.getSubtaskByID(5);
+        Main.inMemoryTaskManager.getEpicByID(3);
+        Main.inMemoryTaskManager.getEpicByID(3);
+        Main.inMemoryTaskManager.getSubtaskByID(6);
+
 
         System.out.println();
         System.out.println("История просмотров:");
         for (Task task : Main.inMemoryTaskManager.getHistory()) {
             System.out.println(task);
         }
+       // System.out.println(Main.inMemoryTaskManager.getHistory().size());
     }
 }
