@@ -255,8 +255,8 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("содержит - null");
         }
         System.out.println("История просмотров:");
-        for (Task T : historyManager.getHistory()) {
-            System.out.println(T);
+        for (Task task : historyManager.getHistory()) {
+            System.out.println(task);
         }
 
     }
