@@ -1,6 +1,5 @@
 package manager;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.Epic;
@@ -102,7 +101,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void subTaskForEpicContainsIdThisEpic (){
+    public void subTaskForEpicContainsIdThisEpic() {
         //подзадача эпика должна содержать ид этого епика
         final Epic epic = new Epic("Имена", "описание");
         SubTask subTusk = new SubTask("Володя", "Молодец",

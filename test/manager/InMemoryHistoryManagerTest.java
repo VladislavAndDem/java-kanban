@@ -2,15 +2,10 @@ package manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import task.Epic;
-import task.SubTask;
 import task.Task;
 import task.TaskStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -59,7 +54,7 @@ public class InMemoryHistoryManagerTest {
     public void correctAddElementToLinkedListHistory() {
         // тест на корректность добавления элементов в связной список
 
-        Task washFlor = new Task("Задача 1" , "Описание 1");
+        Task washFlor = new Task("Задача 1", "Описание 1");
         Task task2 = new Task("title", "description");
         taskManager.addNewTask(washFlor);
         taskManager.addNewTask(task2);
@@ -76,8 +71,8 @@ public class InMemoryHistoryManagerTest {
         // тест на корректность удаления элементов из связного списока
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
-        Task task1 = new Task(1 , "title", "descroption", TaskStatus.NEW);
-        Task task2 = new Task(2 , "title", "descroption", TaskStatus.NEW);
+        Task task1 = new Task(1, "title", "descroption", TaskStatus.NEW);
+        Task task2 = new Task(2, "title", "descroption", TaskStatus.NEW);
 
         inMemoryHistoryManager.add(task1);
         inMemoryHistoryManager.add(task2);
@@ -88,11 +83,11 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void correctOrderOfTheItemsInTheList (){
+    public void correctOrderOfTheItemsInTheList() {
         //Тест на корректность порядка элементов в списке
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
-        Task task1 = new Task(1 , "title", "descroption", TaskStatus.NEW);
-        Task task2 = new Task(2 , "title", "descroption", TaskStatus.NEW);
+        Task task1 = new Task(1, "title", "descroption", TaskStatus.NEW);
+        Task task2 = new Task(2, "title", "descroption", TaskStatus.NEW);
         List<Task> list = List.of(task1, task2);
 
         inMemoryHistoryManager.add(task1);
