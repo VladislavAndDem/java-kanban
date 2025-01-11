@@ -18,6 +18,9 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
+    /*public HistoryManager getHistoryManager() {
+        return historyManager;
+    }*/
 
     private int getIncreasedD() {
         return ++taskId;
@@ -64,6 +67,7 @@ public class InMemoryTaskManager implements TaskManager {
     public Task addNewTask(Task task) {
         task.setId(getIncreasedD()); // в объекте таск инициализироали id
         tasks.put(task.getId(), task);
+
         return task;
     }
 

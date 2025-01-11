@@ -1,10 +1,12 @@
 package manager;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.SubTask;
 import task.Task;
+import task.TaskStatus;
 
 import java.util.List;
 
@@ -65,4 +67,59 @@ class InMemoryTaskManagerTest {
         assertEquals(3, subtasks.size(), "Неверное количество подзадач.");
         assertEquals(savedSubtask1, subtasks.getFirst(), "Подзадачи не совпадают.");
     }
+
+    @Test
+    public void updateTaskShouldReturnTaskWithTheSameId() {
+        // метод обновления Task должнен возвращать задачу с тем же идентификатором
+        final Task expected = new Task("имя", "описание");
+        taskManager.addNewTask(expected);
+        final Task updatedTask = new Task(expected.getId(), "новое имя", "новое описание", TaskStatus.DONE);
+        final Task actual = taskManager.updateTask(updatedTask);
+        assertEquals(expected, actual, "Вернулась задачи с другим id");
+    }
+
+    @Test
+    public void updateEpicShouldReturnEpicWithTheSameId() {
+        // метод обновления Epic должнен возвращать задачу с тем же идентификатором
+        final Epic expected = new Epic("имя", "описание");
+        taskManager.addNewEpic(expected);
+        final Epic updatedEpic = new Epic(expected.getId(), "новое имя", "новое описание", TaskStatus.DONE);
+        final Epic actual = taskManager.updateEpic(updatedEpic);
+        assertEquals(expected, actual, "Вернулся эпик с другим id");
+    }
+
+    @Test
+    public void updateSubtaskShouldReturnSubtaskWithTheSameId() {
+        // метод обновления SunTask должнен возвращать задачу с тем же идентификатором
+        final Epic epic = new Epic("имя", "описание");
+        taskManager.addNewEpic(epic);
+        final SubTask expected = new SubTask("имя", "описание", epic.getId());
+        taskManager.addNewSubTask(expected);
+        final SubTask updatedSubtask = new SubTask(expected.getId(), "новое имя", "новое описание",
+                TaskStatus.DONE, epic.getId());
+        final SubTask actual = taskManager.updateSubtask(updatedSubtask);
+        assertEquals(expected, actual, "Вернулась подзадача с другим id");
+    }
+
+    @Test
+    public void subTaskForEpicContainsIdThisEpic (){
+        //подзадача эпика должна содержать ид этого епика
+        final Epic epic = new Epic("Имена", "описание");
+        SubTask subTusk = new SubTask("Володя", "Молодец",
+                epic.getId());
+        assertEquals(epic.getId(), subTusk.getEpicid(), "Подзадача не относится к епику");
+    }
+
+    @Test
+    void testTaskChangesInManager() {
+        Task task = new Task("Задача", "Описание");
+        taskManager.addNewTask(task); //id = 1, status = NEW
+
+        task.setTitle("Новое название");
+        task.setDescription("Новое описание");
+
+        assertEquals("Новое название", taskManager.getTasks().get(0).getTitle());
+        assertEquals("Новое описание", taskManager.getTasks().get(0).getDescription());
+    }
 }
+
