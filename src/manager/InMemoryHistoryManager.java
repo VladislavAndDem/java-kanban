@@ -12,9 +12,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node<Task> tail;
     Map<Integer, Node<Task>> history = new HashMap<>();
 
-//    public Map<Integer, Node<Task>> getHis (){ // вспомогательный мед для теста
-//        return history;
-//    }
     @Override
     public void add(Task task) {
         if (task == null) {
@@ -34,7 +31,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
 
-
     }
 
     @Override
@@ -50,7 +46,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        Node <Task> node = history.get(id);
+        Node<Task> node = history.get(id);
         if (node != null) {
             removeNode(node);
             history.remove(id);
@@ -79,40 +75,41 @@ public class InMemoryHistoryManager implements HistoryManager {
             nextNode.setPrev(currentNode.getPrev());
         }
     }
+
+    class Node<T extends Task> {
+        private T data;   // ссылка на данные
+        private Node<T> next; // ссылка на следующий элемент
+        private Node<T> prev; // ссылка на предыдущий элемент
+
+        public Node(T data) {
+            this.prev = null;
+            this.next = null;
+            this.data = data;
+        }
+
+        public T getData() {
+            return data;
+        }
+
+        public void setData(T data) {
+            this.data = data;
+        }
+
+        public Node<T> getNext() {
+            return next;
+        }
+
+        public void setNext(Node<T> next) {
+            this.next = next;
+        }
+
+        public Node<T> getPrev() {
+            return prev;
+        }
+
+        public void setPrev(Node<T> prev) {
+            this.prev = prev;
+        }
+    }
 }
 
-class Node<T extends Task> {
-    private T data;   // ссылка на данные
-    private Node<T> next; // ссылка на следующий элемент
-    private Node<T> prev; // ссылка на предыдущий элемент
-
-    public Node(T data) {
-        this.prev = null;
-        this.next = null;
-        this.data = data;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public Node<T> getNext() {
-        return next;
-    }
-
-    public void setNext(Node<T> next) {
-        this.next = next;
-    }
-
-    public Node<T> getPrev() {
-        return prev;
-    }
-
-    public void setPrev(Node<T> prev) {
-        this.prev = prev;
-    }
-}
