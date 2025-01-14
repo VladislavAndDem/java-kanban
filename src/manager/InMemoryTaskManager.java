@@ -1,22 +1,29 @@
-package taskManager;
+package manager;
 
-import task.*;
+import task.Epic;
+import task.SubTask;
+import task.Task;
+import task.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private int taskid = 0;
+    private int taskId = 0;
 
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
+    /*public HistoryManager getHistoryManager() {
+        return historyManager;
+    }*/
 
     private int getIncreasedD() {
-        return ++taskid;
+        return ++taskId;
     }
 
     @Override
@@ -38,21 +45,21 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskByID(int id) {
         Task task = tasks.get(id);
-        historyManager.addHistory(task);
+        historyManager.add(task);
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpicByID(int id) {
         Epic epic = epics.get(id);
-        historyManager.addHistory(epic);
+        historyManager.add(epic);
         return epics.get(id);
     }
 
     @Override
     public SubTask getSubtaskByID(int id) {
         SubTask subTask = subTasks.get(id);
-        historyManager.addHistory(subTask);
+        historyManager.add(subTask);
         return subTasks.get(id);
     }
 
@@ -60,6 +67,7 @@ public class InMemoryTaskManager implements TaskManager {
     public Task addNewTask(Task task) {
         task.setId(getIncreasedD()); // в объекте таск инициализироали id
         tasks.put(task.getId(), task);
+
         return task;
     }
 
@@ -169,7 +177,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTasks() {
         tasks.clear();
-        if (getTasks().isEmpty()){
+        if (getTasks().isEmpty()) {
             System.out.println("Список всех задач пуст");
         }
     }
@@ -178,7 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpics() {
         epics.clear();
         subTasks.clear();
-        if (getEpics().isEmpty()){
+        if (getEpics().isEmpty()) {
             System.out.println("Список всех епиков и их подзадач пуст");
         }
     }
@@ -221,7 +229,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getHistory(){
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 
@@ -251,8 +259,8 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("содержит - null");
         }
         System.out.println("История просмотров:");
-        for (Task T : historyManager.getHistory()) {
-            System.out.println(T);
+        for (Task task : historyManager.getHistory()) {
+            System.out.println(task);
         }
 
     }
