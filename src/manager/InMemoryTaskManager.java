@@ -18,17 +18,12 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    /*public HistoryManager getHistoryManager() {
-        return historyManager;
-    }*/
-
     private int getIncreasedD() {
         return ++taskId;
     }
 
     @Override
     public ArrayList<Task> getTasks() {
-
         return new ArrayList<>(tasks.values());
     }
 
@@ -231,6 +226,16 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+
+    public void addToHistory(int id) {
+        if (epics.containsKey(id)) {
+            historyManager.add(epics.get(id));
+        } else if (subTasks.containsKey(id)) {
+            historyManager.add(subTasks.get(id));
+        } else if (tasks.containsKey(id)) {
+            historyManager.add(tasks.get(id));
+        }
     }
 
     public void printAllManager() {
