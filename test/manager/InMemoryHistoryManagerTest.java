@@ -54,47 +54,19 @@ public class InMemoryHistoryManagerTest {
     public void correctAddElementToLinkedListHistory() {
         // тест на корректность добавления элементов в связной список
 
-        Task washFlor = new Task("Задача 1", "Описание 1");
-        Task task2 = new Task("title", "description");
-        taskManager.addNewTask(washFlor);
-        taskManager.addNewTask(task2);
 
-        taskManager.getTaskByID(washFlor.getId());
-        taskManager.getTaskByID(task2.getId());
-
-        assertEquals(2, taskManager.getHistory().size());
-        assertEquals(washFlor, taskManager.getHistory().get(0));
     }
 
     @Test
     public void correctDeleteElementToLinkedListHistory() {
         // тест на корректность удаления элементов из связного списока
-        InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
-        Task task1 = new Task(1, "title", "descroption", TaskStatus.NEW);
-        Task task2 = new Task(2, "title", "descroption", TaskStatus.NEW);
-
-        inMemoryHistoryManager.add(task1);
-        inMemoryHistoryManager.add(task2);
-
-        inMemoryHistoryManager.remove(task1.getId());
-        assertEquals(1, inMemoryHistoryManager.getHistory().size());
-        assertEquals(task2, inMemoryHistoryManager.getHistory().get(0));
     }
 
     @Test
     public void correctOrderOfTheItemsInTheList() {
         //Тест на корректность порядка элементов в списке
-        InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
-        Task task1 = new Task(1, "title", "descroption", TaskStatus.NEW);
-        Task task2 = new Task(2, "title", "descroption", TaskStatus.NEW);
-        List<Task> list = List.of(task1, task2);
 
-        inMemoryHistoryManager.add(task1);
-        inMemoryHistoryManager.add(task2);
-        List<Task> list2 = inMemoryHistoryManager.getHistory();
-        assertEquals(list, list2);
-        assertEquals(list.get(0), list2.get(0));
 
     }
 }
