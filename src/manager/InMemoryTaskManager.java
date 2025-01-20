@@ -238,6 +238,29 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    /*Вспомогательный метод, который используется в классе FileBackedTaskManager для сохранения id епика в методе
+    loadFromFile*/
+    public Task addTaskDontIncreaseId(Task task) {
+        task.setId(taskId);
+        tasks.put(task.getId(), task);
+        return task;
+    }
+
+    public Epic addEpicDontIncreaseId(Epic epic) {
+        epic.setId(taskId);
+        epics.put(epic.getId(), epic);
+        return epic;
+    }
+
+    public SubTask addSubtaskDontIncreaseId(SubTask subTask) {
+        subTask.setId(getIncreasedD());
+        Epic epic = epics.get(subTask.getEpicid());
+        epic.addSubTask(subTask); // кладем подзадачу в лист подзадач епика
+        subTasks.put(subTask.getId(), subTask);
+        updateEpicStatus(epic);
+        return subTask;
+    }
+
     public void printAllManager() {
         System.out.println("Печатаем tasks:");
         if (!getTasks().isEmpty()) {

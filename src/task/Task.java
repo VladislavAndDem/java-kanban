@@ -27,9 +27,11 @@ public class Task {
         this.status = TaskStatus.NEW;
     }
 
+
     public int getId() {
         return id;
     }
+
 
     public void setId(int id) {
         this.id = id;
@@ -57,6 +59,10 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     @Override
