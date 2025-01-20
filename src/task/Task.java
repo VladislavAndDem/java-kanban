@@ -8,6 +8,11 @@ public class Task {
     protected TaskStatus status;
     protected int id;
 
+    public Task(String title, String description, TaskStatus status) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+    }
 
     public Task(int id, String title, String description, TaskStatus status) {
         this.id = id;
@@ -22,9 +27,11 @@ public class Task {
         this.status = TaskStatus.NEW;
     }
 
+
     public int getId() {
         return id;
     }
+
 
     public void setId(int id) {
         this.id = id;
@@ -52,6 +59,10 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     @Override
