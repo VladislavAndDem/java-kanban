@@ -22,6 +22,13 @@ public class InMemoryTaskManager implements TaskManager {
         return ++taskId;
     }
 
+    protected int getTaskId(){
+        return taskId;
+    }
+    protected void setUpdateId(int taskId) {
+        this.taskId = taskId;
+    }
+
     @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks.values());

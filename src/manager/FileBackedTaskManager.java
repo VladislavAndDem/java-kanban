@@ -1,13 +1,9 @@
 package manager;
 
-import task.Epic;
-import task.SubTask;
-import task.Task;
-import task.TaskStatus;
+import task.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +11,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private static final String HEADER_CSV_FILE = "id,type,name,description,status,epicID\n";
     private final File file;
 
-
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
-
-    /*public FileBackedTaskManager(InMemoryTaskManager inMemoryTaskManager, File fil) {
-        this.inMemoryTaskManager = inMemoryTaskManager;
-        this.file = file;
-    }*/
 
     public void loadFromFile() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
@@ -34,24 +24,39 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (line.isEmpty()) {
                     break;
                 }
+                if (line.equals(HEADER_CSV_FILE)) {
+                    Task task = fromString(line);
 
-                Task task = fromString(line);
+                    switch (task.getType()) {
+                        case TASK:
+                            addTaskDontIncreaseId(task);
+                            break;
+                        case EPIC:
+                            Epic epic = (Epic) task;
+                            addEpicDontIncreaseId(epic);
+                            break;
+                        case SUBTASK:
+                            SubTask subTask = (SubTask) task;
+                            addSubtaskDontIncreaseId(subTask);
+                            break;
+                    }
 
-                switch (task.getType()) {
-                    case TASK:
-                        addTaskDontIncreaseId(task);
-                        break;
-                    case EPIC:
-                        Epic epic = (Epic) task;
-                        addEpicDontIncreaseId(epic);
-                        break;
-                    case SUBTASK:
-                        SubTask subTask = (SubTask) task;
-                        addSubtaskDontIncreaseId(subTask);
-                        break;
                 }
             }
 
+            // Обновляем счетчик идентификаторов максимальным значением из файла
+            String line2;
+            while (bufferedReader.ready()) {
+                line2 = bufferedReader.readLine();
+                if (line2.isEmpty()) {
+                    break;
+                }
+
+                Task task = fromString(line2);
+                if (getTaskId() < task.getId()) {
+                    setUpdateId(task.getId());
+                }
+            }
 
         } catch (IOException e) {
             throw new ManagerSaveException("Не удалось считать данные из файла.");
@@ -59,26 +64,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public void save() {
-        try {
-            if (Files.exists(file.toPath())) { // Проверяем существует ли по указанному пути файл
-                Files.delete(file.toPath()); // Для чего удаляем задачу?
-            }
-            Files.createFile(file.toPath());
-        } catch (IOException e) {
-            throw new ManagerSaveException("Не удалось найти файл для записи данных");
-        }
+
 
         try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
             writer.write(HEADER_CSV_FILE);
 
-            for (Task task : getTasks()) {
+            for (Task task : super.getTasks()) {
                 writer.write(toString(task) + "\n");
             }
 
-            for (Epic epic : getEpics()) {
+            for (Epic epic : super.getEpics()) {
                 writer.write(toString(epic));
             }
-            for (SubTask subTask : getSubTasks()) {
+            for (SubTask subTask : super.getSubTasks()) {
                 writer.write(toString(subTask));
             }
 
@@ -92,7 +90,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private String getParentEpicId(Task task) {
-        if (task instanceof SubTask) {
+        if (task.getType().equals(TaskType.SUBTASK)) {
             return Integer.toString(((SubTask) task).getEpicid());
         }
         return "";
