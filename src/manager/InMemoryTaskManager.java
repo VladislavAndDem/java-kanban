@@ -22,9 +22,10 @@ public class InMemoryTaskManager implements TaskManager {
         return ++taskId;
     }
 
-    protected int getTaskId(){
+    protected int getTaskId() {
         return taskId;
     }
+
     protected void setUpdateId(int taskId) {
         this.taskId = taskId;
     }
