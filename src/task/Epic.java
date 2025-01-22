@@ -9,6 +9,10 @@ public class Epic extends Task {
         super(title, description); // вызов родительского конструктора
     }
 
+    public Epic(String title, String description, TaskStatus status) {
+        super(title, description, status);
+    }
+
     public Epic(int id, String title, String description, TaskStatus status) {
         super(id, title, description, status);
     }
@@ -29,6 +33,11 @@ public class Epic extends Task {
 
     public void setListSubTask(ArrayList<SubTask> listSubTask) {
         this.listSubTask = listSubTask;
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 
     @Override

@@ -18,17 +18,20 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    /*public HistoryManager getHistoryManager() {
-        return historyManager;
-    }*/
-
     private int getIncreasedD() {
         return ++taskId;
     }
 
+    protected int getTaskId() {
+        return taskId;
+    }
+
+    protected void setUpdateId(int taskId) {
+        this.taskId = taskId;
+    }
+
     @Override
     public ArrayList<Task> getTasks() {
-
         return new ArrayList<>(tasks.values());
     }
 
@@ -231,6 +234,39 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+
+    public void addToHistory(int id) {
+        if (epics.containsKey(id)) {
+            historyManager.add(epics.get(id));
+        } else if (subTasks.containsKey(id)) {
+            historyManager.add(subTasks.get(id));
+        } else if (tasks.containsKey(id)) {
+            historyManager.add(tasks.get(id));
+        }
+    }
+
+    /*Вспомогательный метод, который используется в классе FileBackedTaskManager для сохранения id епика в методе
+    loadFromFile*/
+    public Task addTaskDontIncreaseId(Task task) {
+        task.setId(taskId);
+        tasks.put(task.getId(), task);
+        return task;
+    }
+
+    public Epic addEpicDontIncreaseId(Epic epic) {
+        epic.setId(taskId);
+        epics.put(epic.getId(), epic);
+        return epic;
+    }
+
+    public SubTask addSubtaskDontIncreaseId(SubTask subTask) {
+        subTask.setId(getIncreasedD());
+        Epic epic = epics.get(subTask.getEpicid());
+        epic.addSubTask(subTask); // кладем подзадачу в лист подзадач епика
+        subTasks.put(subTask.getId(), subTask);
+        updateEpicStatus(epic);
+        return subTask;
     }
 
     public void printAllManager() {
