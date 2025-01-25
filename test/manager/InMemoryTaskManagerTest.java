@@ -7,6 +7,7 @@ import task.SubTask;
 import task.Task;
 import task.TaskStatus;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +25,7 @@ class InMemoryTaskManagerTest {
     @Test
     void addNewTask() {
         //проверяем, что InMemoryTaskManager добавляет задачи и может найти их по id;
-        final Task task = taskManager.addNewTask(new Task("Задача 1", "Описание 1"));
+        final Task task = taskManager.addNewTask(new Task("Задача 1", "Описание 1", TaskStatus.NEW, Instant.now(), 0));
         final Task savedTask = taskManager.getTaskByID(task.getId());
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
@@ -38,14 +39,13 @@ class InMemoryTaskManagerTest {
     @Test
     void addNewEpicAndSubtasks() {
         //проверяем, что InMemoryTaskManager добавляет эпики и подзадачи и может найти их по id;
-        final Epic epic1 = taskManager.addNewEpic(new Epic("Епик 1", "Описание Епика 1"));
+        final Epic epic1 = taskManager.addNewEpic(new Epic("Епик 1", "Описание Епика 1", TaskStatus.NEW, Instant.now(), 0));
         final SubTask subTask1Epic1 = taskManager.addNewSubTask(new SubTask("Подзадача 1 епика 1",
-                "Описание подзадача 1 епика 1", epic1.getId()));
+                "Описание подзадача 1 епика 1", TaskStatus.NEW, Instant.now(), 0, epic1.getId()));
         final SubTask subTask2Epic1 = taskManager.addNewSubTask(new SubTask("Подзадача 2 епика 1",
-                "Описание подзадача 2 епика 1", epic1.getId()));
+                "Описание подзадача 2 епика 1", TaskStatus.NEW, Instant.now(), 0, epic1.getId()));
         final SubTask subTask3Epic1 = taskManager.addNewSubTask(new SubTask("Подзадача 3 епика 1",
-                "Описание подзадача 3 епика 1",
-                epic1.getId()));
+                "Описание подзадача 3 епика 1", TaskStatus.NEW, Instant.now(), 0, epic1.getId()));
         final Epic savedEpic = taskManager.getEpicByID(epic1.getId());
         final SubTask savedSubtask1 = taskManager.getSubtaskByID(subTask1Epic1.getId());
         final SubTask savedSubtask2 = taskManager.getSubtaskByID(subTask2Epic1.getId());
@@ -70,9 +70,10 @@ class InMemoryTaskManagerTest {
     @Test
     public void updateTaskShouldReturnTaskWithTheSameId() {
         // метод обновления Task должнен возвращать задачу с тем же идентификатором
-        final Task expected = new Task("имя", "описание");
+        final Task expected = new Task("имя", "описание", TaskStatus.NEW, Instant.now(), 0);
         taskManager.addNewTask(expected);
-        final Task updatedTask = new Task(expected.getId(), "новое имя", "новое описание", TaskStatus.DONE);
+        final Task updatedTask = new Task("новое имя", "новое описание", TaskStatus.DONE, Instant.now(), 0);
+        updatedTask.setId(expected.getId());
         final Task actual = taskManager.updateTask(updatedTask);
         assertEquals(expected, actual, "Вернулась задачи с другим id");
     }
@@ -80,9 +81,10 @@ class InMemoryTaskManagerTest {
     @Test
     public void updateEpicShouldReturnEpicWithTheSameId() {
         // метод обновления Epic должнен возвращать задачу с тем же идентификатором
-        final Epic expected = new Epic("имя", "описание");
+        final Epic expected = new Epic("имя", "описание", TaskStatus.NEW, Instant.now(), 0);
         taskManager.addNewEpic(expected);
-        final Epic updatedEpic = new Epic(expected.getId(), "новое имя", "новое описание", TaskStatus.DONE);
+        final Epic updatedEpic = new Epic("новое имя", "новое описание", TaskStatus.DONE, expected.getStartTime(), 0);
+        updatedEpic.setId(expected.getId());
         final Epic actual = taskManager.updateEpic(updatedEpic);
         assertEquals(expected, actual, "Вернулся эпик с другим id");
     }
@@ -90,12 +92,13 @@ class InMemoryTaskManagerTest {
     @Test
     public void updateSubtaskShouldReturnSubtaskWithTheSameId() {
         // метод обновления SunTask должнен возвращать задачу с тем же идентификатором
-        final Epic epic = new Epic("имя", "описание");
+        final Epic epic = new Epic("имя", "описание", TaskStatus.NEW, Instant.now(), 0);
         taskManager.addNewEpic(epic);
-        final SubTask expected = new SubTask("имя", "описание", epic.getId());
+        final SubTask expected = new SubTask("имя", "описание", TaskStatus.NEW, Instant.now(), 0, epic.getId());
         taskManager.addNewSubTask(expected);
-        final SubTask updatedSubtask = new SubTask(expected.getId(), "новое имя", "новое описание",
-                TaskStatus.DONE, epic.getId());
+        final SubTask updatedSubtask = new SubTask("новое имя", "новое описание",
+                TaskStatus.DONE, Instant.now(), 0, epic.getId());
+        updatedSubtask.setId(expected.getId());
         final SubTask actual = taskManager.updateSubtask(updatedSubtask);
         assertEquals(expected, actual, "Вернулась подзадача с другим id");
     }
@@ -111,7 +114,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void testTaskChangesInManager() {
-        Task task = new Task("Задача", "Описание");
+        Task task = new Task("Задача", "Описание", TaskStatus.NEW, Instant.now(), 0);
         taskManager.addNewTask(task); //id = 1, status = NEW
 
         task.setTitle("Новое название");

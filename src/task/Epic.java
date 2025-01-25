@@ -1,9 +1,11 @@
 package task;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private ArrayList<SubTask> listSubTask = new ArrayList<>();
+    private Instant endTime;
 
     public Epic(String title, String description) {
         super(title, description); // вызов родительского конструктора
@@ -13,8 +15,9 @@ public class Epic extends Task {
         super(title, description, status);
     }
 
-    public Epic(int id, String title, String description, TaskStatus status) {
-        super(id, title, description, status);
+    public Epic(String title, String description, TaskStatus status, Instant startTime, long duration) {
+        super(title, description, status, startTime, duration);
+        this.endTime = super.getEndTime();
     }
 
     //   Добовление подзадачи в лист епика
@@ -38,6 +41,15 @@ public class Epic extends Task {
     @Override
     public TaskType getType() {
         return TaskType.EPIC;
+    }
+
+    @Override
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
     }
 
     @Override
