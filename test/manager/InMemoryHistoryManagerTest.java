@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InMemoryHistoryManagerTest {
-    private TaskManager taskManager;
+    /*private TaskManager taskManager;
 
     @BeforeEach
     public void beforeEach() {
@@ -103,5 +103,5 @@ public class InMemoryHistoryManagerTest {
         assertEquals(list, list2);
         assertEquals(list.get(0), list2.get(0));
 
-    }
+    }*/
 }

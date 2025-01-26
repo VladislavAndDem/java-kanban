@@ -4,7 +4,9 @@ import task.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,8 +115,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String title = params[2];
         String description = params[3];
         TaskStatus status = TaskStatus.valueOf(params[4].toUpperCase());
-        Instant startTime = Instant.parse(params[5]);
-        long duration = Long.parseLong(params[6]);
+        LocalDateTime startTime = LocalDateTime.parse(params[5]);
+        Duration duration = Duration.parse(params[6]);
         Integer epicId = type.equals("SUBTASK") ? Integer.parseInt(params[7]) : null;
 
         if (type.equals("EPIC")) {

@@ -1,7 +1,9 @@
 package task;
 
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -9,9 +11,8 @@ public class Task {
     protected String description;
     protected TaskStatus status;
     protected int id;
-    protected Instant startTime;
-    protected long duration;
-    private static final long SECONDS_IN_MINUTE = 60L;
+    protected LocalDateTime startTime;
+    protected Duration duration;
 
     public Task(String title, String description, TaskStatus status) {
         this.title = title;
@@ -19,7 +20,7 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String title, String description, TaskStatus status, Instant startTime, long duration) {
+    public Task(String title, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
 
         this.title = title;
         this.description = description;
@@ -72,25 +73,25 @@ public class Task {
         return TaskType.TASK;
     }
 
-    public long getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(long duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
-    public Instant getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public Instant getEndTime() {
+    public LocalDateTime getEndTime() {
 
-        return startTime.plusSeconds(duration * SECONDS_IN_MINUTE);
+        return startTime.plusMinutes(duration.toMinutes());
     }
 
     @Override
@@ -108,12 +109,16 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task.Task{" +
-                "title='" + title + '\'' +
+        return "Task{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
-                ", id=" + id +
+                ", status='" + status + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", duration='" + duration + '\'' +
+
                 '}';
+
     }
 
 

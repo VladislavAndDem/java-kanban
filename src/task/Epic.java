@@ -1,11 +1,13 @@
 package task;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private ArrayList<SubTask> listSubTask = new ArrayList<>();
-    private Instant endTime;
+    private LocalDateTime endTime;
 
     public Epic(String title, String description) {
         super(title, description); // вызов родительского конструктора
@@ -15,7 +17,7 @@ public class Epic extends Task {
         super(title, description, status);
     }
 
-    public Epic(String title, String description, TaskStatus status, Instant startTime, long duration) {
+    public Epic(String title, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
         super(title, description, status, startTime, duration);
         this.endTime = super.getEndTime();
     }
@@ -44,22 +46,24 @@ public class Epic extends Task {
     }
 
     @Override
-    public Instant getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Instant endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
     @Override
     public String toString() {
-        return "Task.Epic{" +
-                "title= " + getTitle() + '\'' +
+        return "Epic{" +
+                " id='" + getId() +
+                ", title= " + getTitle() + '\'' +
                 ", description = " + getDescription() + '\'' +
-                ", id=" + getId() +
-                ", listSubTask.size = " + listSubTask.size() +
                 ", status = " + getStatus() +
+                ", startTime='" + startTime + '\'' +
+                ", duration='" + duration + '\'' +
+                ", listSubTask.size = " + listSubTask.size() +
                 '}';
     }
 }

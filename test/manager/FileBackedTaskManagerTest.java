@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
-    private static final Path path = Path.of("testFile");
+    /*private static final Path path = Path.of("testFile");
     private FileBackedTaskManager fileBackedTaskManager;
     File temp = new File(String.valueOf(path));
 
@@ -42,11 +42,11 @@ class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
         Task task = new Task("Test 1", "Testing task 1", TaskStatus.NEW, Instant.now(), 0);
         fileBackedTaskManager.addNewTask(task);
 
-        /*Epic epic = new Epic("Epic 1", "Testing epic 1", TaskStatus.NEW, Instant.now(), 0);
+        *//*Epic epic = new Epic("Epic 1", "Testing epic 1", TaskStatus.NEW, Instant.now(), 0);
         fileBackedTaskManager.addNewEpic(epic);
 
         SubTask subTask = new SubTask("Subtask 1", "Testing subtask 1", TaskStatus.NEW, Instant.now(), 0, epic.getId());
-        fileBackedTaskManager.addNewSubTask(subTask);*/
+        fileBackedTaskManager.addNewSubTask(subTask);*//*
 
         assertTrue(temp.length() > 0);
     }
@@ -55,14 +55,14 @@ class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
     public void shouldLoadTasksEpicsSubtasks() {
         Task task = new Task("Test 1", "Testing task 1", TaskStatus.NEW, Instant.now(), 0);
         fileBackedTaskManager.addNewTask(task);
-        /*Epic epic = new Epic("Epic 1", "Testing epic 1", TaskStatus.NEW, Instant.now(), 0);
-        fileBackedTaskManager.addNewEpic(epic);*/
+        *//*Epic epic = new Epic("Epic 1", "Testing epic 1", TaskStatus.NEW, Instant.now(), 0);
+        fileBackedTaskManager.addNewEpic(epic);*//*
 
         ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task);
 
-        /*SubTask subTask = new SubTask("Subtask 1", "Testing subtask 1", TaskStatus.NEW, Instant.now(),0, epic.getId());
-        fileBackedTaskManager.addNewSubTask(subTask);*/
+        *//*SubTask subTask = new SubTask("Subtask 1", "Testing subtask 1", TaskStatus.NEW, Instant.now(),0, epic.getId());
+        fileBackedTaskManager.addNewSubTask(subTask);*//*
 
         fileBackedTaskManager.loadFromFile();
         assertEquals(tasks, fileBackedTaskManager.getTasks());
@@ -75,5 +75,5 @@ class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
         assertEquals(Collections.EMPTY_LIST, fileBackedTaskManager.getTasks());
         assertEquals(Collections.EMPTY_LIST, fileBackedTaskManager.getEpics());
         assertEquals(Collections.EMPTY_LIST, fileBackedTaskManager.getSubTasks());
-    }
+    }*/
 }

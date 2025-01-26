@@ -277,48 +277,19 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public void updateTimeEpic(Epic epic) {
-        List<SubTask> subtasks = getEpicSubtasks(epic);
-        Instant startTime = subtasks.get(0).getStartTime();
-        Instant endTime = subtasks.get(0).getEndTime();
-
-        for (SubTask subtask : subtasks) {
-            if (subtask.getStartTime().isBefore(startTime)) startTime = subtask.getStartTime();
-            if (subtask.getEndTime().isAfter(endTime)) endTime = subtask.getEndTime();
-        }
-
-        epic.setStartTime(startTime);
-        epic.setEndTime(endTime);
-        long duration = (endTime.toEpochMilli() - startTime.toEpochMilli());
-        epic.setDuration(duration);
+        epic.getListSubTask().stream()
+                .filter(subTask -> subTask.getStartTime() != null)
+                .min(Comparator.comparing(SubTask::getStartTime))
+                .ifPresent(subTask -> epic.setStartTime(subTask.getStartTime()));
+        epic.getListSubTask().stream()
+                .filter(subTask -> subTask.getEndTime() != null)
+                .max(Comparator.comparing(SubTask::getEndTime))
+                .ifPresent(subTask -> epic.setEndTime(subTask.getEndTime()));
     }
 
     private void addNewPrioritizedTask(Task task) {
         prioritizedTasks.add(task);
         validateTaskPriority();
-    }
-
-    public boolean checkTime(Task task) {
-        List<Task> tasks = List.copyOf(prioritizedTasks);
-        int sizeTimeNull = 0;
-        if (tasks.size() > 0) {
-            for (Task taskSave : tasks) {
-                if (taskSave.getStartTime() != null && taskSave.getEndTime() != null) {
-                    if (task.getStartTime().isBefore(taskSave.getStartTime())
-                            && task.getEndTime().isBefore(taskSave.getStartTime())) {
-                        return true;
-                    } else if (task.getStartTime().isAfter(taskSave.getEndTime())
-                            && task.getEndTime().isAfter(taskSave.getEndTime())) {
-                        return true;
-                    }
-                } else {
-                    sizeTimeNull++;
-                }
-
-            }
-            return sizeTimeNull == tasks.size();
-        } else {
-            return true;
-        }
     }
 
     private void validateTaskPriority() {
@@ -331,10 +302,42 @@ public class InMemoryTaskManager implements TaskManager {
 
             if (taskHasIntersections) {
                 throw new ManagerValidateException(
-                        "Задачи #" + task.getId() + " и #" + tasks.get(i - 1) + "пересекаются" + "\n"
+                        "Задачи #" + task.getId() + " и #" + tasks.get(i - 1).getId() + " пересекаются" + "\n"
                                 + task.getStartTime() + " --- " + tasks.get(i - 1).getStartTime());
-
             }
+        }
+    }
+
+    public boolean checkTime(Task task) {
+        List<Task> tasks = List.copyOf(prioritizedTasks);
+
+        // Подсчёт количества задач с неопределённым временем начала и окончания
+        int sizeTimeNull = 0;
+
+        for (Task taskSave : tasks) {
+            if (taskSave.getStartTime() == null || taskSave.getEndTime() == null) {
+                sizeTimeNull++;
+            }
+        }
+
+        if (tasks.size() > 0) {
+
+            // Проверка пересечения времени задач
+            for (Task taskSave : tasks) {
+
+                if ((taskSave.getStartTime() != null && taskSave.getEndTime() != null) &&
+                        (task.getStartTime().isBefore(taskSave.getStartTime()) && task.getEndTime().isBefore(taskSave.getStartTime())) ||
+                        (task.getStartTime().isAfter(taskSave.getEndTime()) && task.getEndTime().isAfter(taskSave.getEndTime()))
+                ) {
+                    return true;
+                } else if (taskSave.getStartTime() != null && taskSave.getEndTime() != null &&
+                        task.getStartTime().compareTo(taskSave.getStartTime()) >= 0 && task.getEndTime().compareTo(taskSave.getEndTime()) <= 0){
+                    return false;
+                }
+            }
+            return sizeTimeNull == tasks.size();
+        } else {
+            return true;
         }
     }
 
