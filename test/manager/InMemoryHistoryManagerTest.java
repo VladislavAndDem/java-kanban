@@ -1,15 +1,5 @@
 package manager;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import task.Task;
-import task.TaskStatus;
-
-import java.time.Instant;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class InMemoryHistoryManagerTest {
     /*private TaskManager taskManager;
 

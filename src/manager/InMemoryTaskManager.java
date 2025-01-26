@@ -5,7 +5,6 @@ import task.SubTask;
 import task.Task;
 import task.TaskStatus;
 
-import java.time.Instant;
 import java.util.*;
 
 
@@ -331,7 +330,7 @@ public class InMemoryTaskManager implements TaskManager {
                 ) {
                     return true;
                 } else if (taskSave.getStartTime() != null && taskSave.getEndTime() != null &&
-                        task.getStartTime().compareTo(taskSave.getStartTime()) >= 0 && task.getEndTime().compareTo(taskSave.getEndTime()) <= 0){
+                        task.getStartTime().compareTo(taskSave.getStartTime()) >= 0 && task.getEndTime().compareTo(taskSave.getEndTime()) <= 0) {
                     return false;
                 }
             }

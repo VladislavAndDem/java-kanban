@@ -9,13 +9,13 @@ import task.TaskStatus;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class InMemoryTaskManagerTest {
 
@@ -49,7 +49,6 @@ class InMemoryTaskManagerTest {
                 TaskStatus.NEW,
                 LocalDateTime.of(2025, Month.JANUARY, 1, 2, 0),
                 Duration.ofHours(1));
-
 
 
     }
