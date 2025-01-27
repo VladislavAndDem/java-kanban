@@ -84,7 +84,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public SubTask addNewSubTask(SubTask subTask) {
         subTask.setId(getIncreasedD());
-        Epic epic = epics.get(subTask.getEpicid());
+        Epic epic = epics.get(subTask.getEpicId());
         epic.addSubTask(subTask); // кладем подзадачу в лист подзадач епика
         addNewPrioritizedTask(subTask);
         subTasks.put(subTask.getId(), subTask);
@@ -137,7 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTaskID == null || !subTasks.containsKey(subTaskID)) {
             return null;
         }
-        int epicID = subTask.getEpicid();
+        int epicID = subTask.getEpicId();
         SubTask oldSubtask = subTasks.get(subTaskID);
         subTasks.replace(subTaskID, subTask);
         // обновляем подзадачу в списке подзадач эпика и проверяем статус эпика
@@ -228,7 +228,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteSubtaskByID(int id) {
         SubTask subtask = subTasks.get(id);
-        int epicID = subtask.getEpicid();
+        int epicID = subtask.getEpicId();
         subTasks.remove(id);
 //        обновляем список подзадач и статус эпика
         Epic epic = epics.get(epicID);
@@ -269,7 +269,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     public void addSubtaskDontIncreaseId(SubTask subTask) {
         subTask.setId(getIncreasedD());
-        Epic epic = epics.get(subTask.getEpicid());
+        Epic epic = epics.get(subTask.getEpicId());
         epic.addSubTask(subTask); // кладем подзадачу в лист подзадач епика
         subTasks.put(subTask.getId(), subTask);
         updateEpicStatus(epic);

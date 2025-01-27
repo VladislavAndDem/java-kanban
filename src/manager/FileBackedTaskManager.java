@@ -93,7 +93,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String getParentEpicId(Task task) {
         if (task.getType().equals(TaskType.SUBTASK)) {
-            return Integer.toString(((SubTask) task).getEpicid());
+            return Integer.toString(((SubTask) task).getEpicId());
         }
         return "";
     }

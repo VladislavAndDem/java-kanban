@@ -5,25 +5,20 @@ import java.time.LocalDateTime;
 
 public class SubTask extends Task {
 
-    private final int epicid;
-
-    public SubTask(String title, String description, TaskStatus status, int epicid) {
-        super(title, description, status);
-        this.epicid = epicid;
-    }
+    private final int epicId;
 
     public SubTask(String title, String description, int epicID) {
         super(title, description);
-        this.epicid = epicID;
+        this.epicId = epicID;
     }
 
     public SubTask(String title, String description, TaskStatus status, LocalDateTime startTime, Duration duration, int epicID) {
         super(title, description, status, startTime, duration);
-        this.epicid = epicID;
+        this.epicId = epicID;
     }
 
-    public int getEpicid() {
-        return epicid;
+    public int getEpicId() {
+        return epicId;
     }
 
     @Override
@@ -41,7 +36,7 @@ public class SubTask extends Task {
                 ", startTime='" + startTime + '\'' +
                 ", duration='" + duration + '\'' +
                 ", endTime='" + getEndTime() +
-                ", epicID=" + epicid +
+                ", epicID=" + epicId +
                 '}';
     }
 }

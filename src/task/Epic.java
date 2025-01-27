@@ -3,17 +3,14 @@ package task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
-    private ArrayList<SubTask> listSubTask = new ArrayList<>();
+    private List<SubTask> listSubTask = new ArrayList<>();
     private LocalDateTime endTime;
 
     public Epic(String title, String description) {
         super(title, description); // вызов родительского конструктора
-    }
-
-    public Epic(String title, String description, TaskStatus status) {
-        super(title, description, status);
     }
 
     public Epic(String title, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
@@ -32,7 +29,7 @@ public class Epic extends Task {
     }
 
     public ArrayList<SubTask> getListSubTask() {
-        return listSubTask;
+        return new ArrayList<>(listSubTask);
     }
 
     public void setListSubTask(ArrayList<SubTask> listSubTask) {
