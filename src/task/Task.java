@@ -1,5 +1,8 @@
 package task;
 
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -7,6 +10,8 @@ public class Task {
     protected String description;
     protected TaskStatus status;
     protected int id;
+    protected LocalDateTime startTime;
+    protected Duration duration;
 
     public Task(String title, String description, TaskStatus status) {
         this.title = title;
@@ -14,11 +19,13 @@ public class Task {
         this.status = status;
     }
 
-    public Task(int id, String title, String description, TaskStatus status) {
-        this.id = id;
+    public Task(String title, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
+
         this.title = title;
         this.description = description;
         this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public Task(String title, String description) {
@@ -65,6 +72,27 @@ public class Task {
         return TaskType.TASK;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+
+        return startTime.plusMinutes(duration.toMinutes());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,12 +108,16 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task.Task{" +
-                "title='" + title + '\'' +
+        return "Task{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
-                ", id=" + id +
+                ", status='" + status + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", duration='" + duration + '\'' +
+
                 '}';
+
     }
 
 
