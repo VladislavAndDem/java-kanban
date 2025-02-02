@@ -4,11 +4,13 @@ import task.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private static final String HEADER_CSV_FILE = "id,type,name,description,status,epicID\n";
+    private static final String HEADER_CSV_FILE = "id,type,name,description,status,startTime,duration,epicID\n";
     private final File file;
 
     public FileBackedTaskManager(File file) {
@@ -91,7 +93,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String getParentEpicId(Task task) {
         if (task.getType().equals(TaskType.SUBTASK)) {
-            return Integer.toString(((SubTask) task).getEpicid());
+            return Integer.toString(((SubTask) task).getEpicId());
         }
         return "";
     }
@@ -99,7 +101,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     //    Метод сохранения задачи в строку
     public String toString(Task task) {
         String[] toJoin = {Integer.toString(task.getId()), task.getType().toString(), task.getTitle(),
-                task.getDescription(), task.getStatus().toString(), getParentEpicId(task)};
+                task.getDescription(), task.getStatus().toString(), String.valueOf(task.getStartTime()),
+                String.valueOf(task.getDuration()), getParentEpicId(task)};
         return String.join(",", toJoin);
     }
 
@@ -111,19 +114,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String title = params[2];
         String description = params[3];
         TaskStatus status = TaskStatus.valueOf(params[4].toUpperCase());
-        Integer epicId = type.equals("SUBTASK") ? Integer.parseInt(params[5]) : null;
+        LocalDateTime startTime = LocalDateTime.parse(params[5]);
+        Duration duration = Duration.parse(params[6]);
+        Integer epicId = type.equals("SUBTASK") ? Integer.parseInt(params[7]) : null;
 
         if (type.equals("EPIC")) {
-            Epic epic = new Epic(title, description, status);
+            Epic epic = new Epic(title, description, status, startTime, duration);
             epic.setId(id);
-            epic.setStatus(status);
+
             return epic;
         } else if (type.equals("SubTask")) {
-            SubTask subTask = new SubTask(title, description, status, epicId);
+            SubTask subTask = new SubTask(title, description, status, startTime, duration, epicId);
             subTask.setId(id);
             return subTask;
         } else {
-            Task task = new Task(title, description, status);
+            Task task = new Task(title, description, status, startTime, duration);
             task.setId(id);
             return task;
         }

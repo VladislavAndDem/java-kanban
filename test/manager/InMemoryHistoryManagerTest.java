@@ -5,65 +5,73 @@ import org.junit.jupiter.api.Test;
 import task.Task;
 import task.TaskStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.time.Month.JANUARY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InMemoryHistoryManagerTest {
-    private TaskManager taskManager;
+
+    private InMemoryHistoryManager manager;
+    private Task task;
+    private Task task2;
 
     @BeforeEach
-    public void beforeEach() {
-        taskManager = Managers.getDefault();
-
+    void setUp() {
+        manager = new InMemoryHistoryManager();
+        task = new Task(
+                "Задача",
+                "Описание задачи",
+                TaskStatus.NEW,
+                LocalDateTime.of(2025, JANUARY, 1, 0, 0),
+                Duration.ofHours(1)
+        );
+        task2 = new Task(
+                "Задача2",
+                "Описание задачи2",
+                TaskStatus.NEW,
+                LocalDateTime.of(2025, JANUARY, 1, 1, 0),
+                Duration.ofHours(1)
+        );
     }
 
     @Test
-    public void getHistoryShouldReturnListWithoutDuplicates() {
-        // get History Должен возвращать Список без дубликатов
-        for (int i = 0; i < 5; i++) { // добавляем 5 задач в мапу tasks
-            taskManager.addNewTask(new Task("Некоторая задача", "Некоторое описание"));
-        }
-        // получаем таски по id
-        taskManager.getTaskByID(1);
-        taskManager.getTaskByID(1);//первый вызов должен удалиться
-        taskManager.getTaskByID(3);
-        taskManager.getTaskByID(3);//первый вызов должен удалиться
-        // В истории должно быть два элемента
-        List<Task> list = taskManager.getHistory();
-        assertEquals(2, list.size(), "Неверное количество элементов в истории ");
+    void testCreateTaskToHistory() {
+        task.setId(1);
+
+        // Добавляем задачу в историю
+        manager.add(task);
+
+        // Получаем историю задач
+        List<Task> history = manager.getHistory();
+
+        // Проверяем, что задача добавлена в историю
+        assertEquals(1, history.size(), "History должна содержать одну задачу");
+        assertEquals(task.getId(), history.getFirst().getId(), "tasks.Task Id должен совпадать");
+        assertEquals(task.getTitle(), history.getFirst().getTitle(), "tasks.Task title должен совпадать");
+        assertEquals(task.getDescription(), history.getFirst().getDescription(), "tasks.Task description должен совпадать");
+        assertEquals(task.getStatus(), history.getFirst().getStatus(), "tasks.Task status должен совпадать");
     }
 
     @Test
-    public void getHistoryShouldReturnOldTaskAfterUpdate() {
-        // get History Должен Возвращать Старую Подзадачу После Обновления
-        Task washFloor = new Task("Задача 1", "Описание 1");
-        taskManager.addNewTask(washFloor);
-        taskManager.getTaskByID(washFloor.getId());
-        taskManager.updateTask(new Task(washFloor.getId(), "Задача 1.1",
-                "Описание 1.1", TaskStatus.IN_PROGRESS));
-        List<Task> tasks = taskManager.getHistory();
-        Task oldTask = tasks.getFirst();
-        assertEquals(washFloor.getTitle(), oldTask.getTitle(), "В истории не сохранилась старая версия задачи");
-        assertEquals(washFloor.getDescription(), oldTask.getDescription(),
-                "В истории не сохранилась старая версия задачи");
+    void testMultipleTasksInHistory() {
+        task.setId(1);
+        task2.setId(2);
 
-    }
+        // Добавляем задачи в историю
+        manager.add(task);
+        manager.add(task2);
 
-    @Test
-    public void correctAddElementToLinkedListHistory() {
-        // тест на корректность добавления элементов в связной список
+        // Получаем историю задач
+        List<Task> history = manager.getHistory();
 
-    }
+        // Проверяем, что история содержит две задачи
+        assertEquals(2, history.size(), "History должна содержать две задачи");
 
-    @Test
-    public void correctDeleteElementToLinkedListHistory() {
-        // тест на корректность удаления элементов из связного списока
-
-    }
-
-    @Test
-    public void correctOrderOfTheItemsInTheList() {
-        //Тест на корректность порядка элементов в списке
+        // Проверяем, что задачи в истории соответствуют добавленным
+        assertEquals(task.getId(), history.get(0).getId(), "Первая задача должна быть task");
+        assertEquals(task2.getId(), history.get(1).getId(), "Вторая задача должна быть task2");
     }
 }

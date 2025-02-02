@@ -1,20 +1,21 @@
 package task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
-    private ArrayList<SubTask> listSubTask = new ArrayList<>();
+    private List<SubTask> listSubTask = new ArrayList<>();
+    private LocalDateTime endTime;
 
     public Epic(String title, String description) {
         super(title, description); // вызов родительского конструктора
     }
 
-    public Epic(String title, String description, TaskStatus status) {
-        super(title, description, status);
-    }
-
-    public Epic(int id, String title, String description, TaskStatus status) {
-        super(id, title, description, status);
+    public Epic(String title, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
+        super(title, description, status, startTime, duration);
+        this.endTime = super.getEndTime();
     }
 
     //   Добовление подзадачи в лист епика
@@ -28,7 +29,7 @@ public class Epic extends Task {
     }
 
     public ArrayList<SubTask> getListSubTask() {
-        return listSubTask;
+        return new ArrayList<>(listSubTask);
     }
 
     public void setListSubTask(ArrayList<SubTask> listSubTask) {
@@ -41,13 +42,24 @@ public class Epic extends Task {
     }
 
     @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
     public String toString() {
-        return "Task.Epic{" +
-                "title= " + getTitle() + '\'' +
+        return "Epic{" +
+                " id='" + getId() +
+                ", title= " + getTitle() + '\'' +
                 ", description = " + getDescription() + '\'' +
-                ", id=" + getId() +
-                ", listSubTask.size = " + listSubTask.size() +
                 ", status = " + getStatus() +
+                ", startTime='" + startTime + '\'' +
+                ", duration='" + duration + '\'' +
+                ", listSubTask.size = " + listSubTask.size() +
                 '}';
     }
 }
