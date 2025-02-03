@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import manager.TaskManager;
-import task.Task;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
     private final Gson gson;
@@ -24,9 +22,7 @@ public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
         String[] pathParts = requestPath.split("/");
 
         if (pathParts.length == 2 && exchange.getRequestMethod().equals("GET")) {
-            String response = manager.getHistory().stream()
-                    .map(Task::toString)
-                    .collect(Collectors.joining("\n"));
+            String response = gson.toJson(manager.getHistory());
             String jsonResponse = gson.toJson(response);
             sendText(exchange, jsonResponse, 200);
         } else {
