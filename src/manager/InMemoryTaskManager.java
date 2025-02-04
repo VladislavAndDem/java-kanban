@@ -46,6 +46,15 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public ArrayList<Task> getAllTasks() {
+        ArrayList<Task> allTasks = new ArrayList<>();
+        allTasks.addAll(tasks.values());
+        allTasks.addAll(epics.values());
+        allTasks.addAll(subTasks.values());
+        return allTasks;
+    }
+
+    @Override
     public Task getTaskByID(int id) {
         Task task = tasks.get(id);
         historyManager.add(task);
@@ -340,7 +349,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    private List<Task> getPrioritizedTasks() {
+    public List<Task> getPrioritizedTasks() {
         return prioritizedTasks.stream().toList();
     }
 

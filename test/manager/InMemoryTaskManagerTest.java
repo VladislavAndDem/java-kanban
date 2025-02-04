@@ -70,16 +70,6 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewEpicAndSubtasks() {
-        //проверяем, что InMemoryTaskManager добавляет эпики и подзадачи и может найти их по id;
-    }
-
-    @Test
-    public void updateTaskShouldReturnTaskWithTheSameId() {
-        // метод обновления Task должнен возвращать задачу с тем же идентификатором
-    }
-
-    @Test
     public void updateEpicShouldReturnEpicWithTheSameId() {
         // метод обновления Epic должнен возвращать задачу с тем же идентификатором
 
@@ -93,11 +83,6 @@ class InMemoryTaskManagerTest {
         updatedEpic.setId(epic1.getId());
         final Epic actual = taskManager.updateEpic(updatedEpic);
         assertEquals(epic1, actual, "Вернулся эпик с другим id");
-    }
-
-    @Test
-    public void updateSubtaskShouldReturnSubtaskWithTheSameId() {
-        // метод обновления SunTask должнен возвращать задачу с тем же идентификатором
     }
 
     @Test

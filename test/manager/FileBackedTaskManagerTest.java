@@ -33,17 +33,6 @@ class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
     }
 
     @Test
-    public void shouldSaveTasksEpicsSubtasks() {
-        // Должен сохранять таски, епики и сабтаски
-    }
-
-    @Test
-    public void shouldLoadTasksEpicsSubtasks() {
-        // Должен загружать таски, епики и сабтаски
-
-    }
-
-    @Test
     public void shouldSaveAndLoadEmptyTasksEpicsSubtasks() {
         fileBackedTaskManager.save();
         fileBackedTaskManager.loadFromFile();
